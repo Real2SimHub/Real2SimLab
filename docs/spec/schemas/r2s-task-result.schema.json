@@ -1,0 +1,529 @@
+{
+  "$defs": {
+    "Headline": {
+      "additionalProperties": false,
+      "description": "The one number a task reports, as its benchmark defines it, for cross-benchmark tables.\n\nUnder the reproduction protocol it is the reproduction skill; under the native protocol\nthe benchmark's own headline metric, read from its official report by the scorer plugin.",
+      "properties": {
+        "higher_is_better": {
+          "default": true,
+          "title": "Higher Is Better",
+          "type": "boolean"
+        },
+        "metric": {
+          "title": "Metric",
+          "type": "string"
+        },
+        "range": {
+          "anyOf": [
+            {
+              "maxItems": 2,
+              "minItems": 2,
+              "prefixItems": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "number"
+                }
+              ],
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Range"
+        },
+        "references": {
+          "additionalProperties": {
+            "type": "number"
+          },
+          "title": "References",
+          "type": "object"
+        },
+        "scorer": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Scorer"
+        },
+        "source": {
+          "enum": [
+            "lab",
+            "official"
+          ],
+          "title": "Source",
+          "type": "string"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unit"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Value"
+        }
+      },
+      "required": [
+        "metric",
+        "source"
+      ],
+      "title": "Headline",
+      "type": "object"
+    },
+    "JsonValue": {},
+    "MetricRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "detail": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Detail"
+        },
+        "status": {
+          "enum": [
+            "computed",
+            "not_applicable",
+            "error"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Value"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "title": "MetricRecord",
+      "type": "object"
+    },
+    "Reproduction": {
+      "additionalProperties": false,
+      "description": "The frozen twin's output against the task's reference.",
+      "properties": {
+        "detail": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Detail"
+        },
+        "error_to_noise": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Error To Noise"
+        },
+        "noise_floor": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Noise Floor"
+        },
+        "repeat_skill": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Repeat Skill"
+        },
+        "reproducible": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reproducible"
+        },
+        "run_status": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Run Status"
+        },
+        "score": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/WindowScore"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "session_consistent": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Session Consistent"
+        },
+        "status": {
+          "$ref": "#/$defs/ReproductionStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "title": "Reproduction",
+      "type": "object"
+    },
+    "ReproductionStatus": {
+      "enum": [
+        "scored",
+        "run_failed",
+        "not_delivered"
+      ],
+      "title": "ReproductionStatus",
+      "type": "string"
+    },
+    "TaskSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "reproduction_error": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reproduction Error"
+        },
+        "reproduction_skill": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reproduction Skill"
+        }
+      },
+      "title": "TaskSummary",
+      "type": "object"
+    },
+    "WindowScore": {
+      "additionalProperties": false,
+      "description": "Errors over a span of frames, and the skill against a static baseline.",
+      "properties": {
+        "errors": {
+          "additionalProperties": {
+            "$ref": "#/$defs/MetricRecord"
+          },
+          "title": "Errors",
+          "type": "object"
+        },
+        "frames": {
+          "maxItems": 2,
+          "minItems": 2,
+          "prefixItems": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "integer"
+            }
+          ],
+          "title": "Frames",
+          "type": "array"
+        },
+        "skill": {
+          "default": 0.0,
+          "title": "Skill",
+          "type": "number"
+        },
+        "skill_raw": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Skill Raw"
+        },
+        "static_errors": {
+          "additionalProperties": {
+            "$ref": "#/$defs/MetricRecord"
+          },
+          "title": "Static Errors",
+          "type": "object"
+        }
+      },
+      "required": [
+        "frames",
+        "errors",
+        "static_errors"
+      ],
+      "title": "WindowScore",
+      "type": "object"
+    }
+  },
+  "$id": "r2s-task-result.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "One method's result on one task, for one trial and seed.",
+  "properties": {
+    "benchmark": {
+      "title": "Benchmark",
+      "type": "string"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "delivered": {
+      "title": "Delivered",
+      "type": "boolean"
+    },
+    "delivery_failure": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Delivery Failure"
+    },
+    "headline": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Headline"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "infra_error": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Infra Error"
+    },
+    "lab_version": {
+      "title": "Lab Version",
+      "type": "string"
+    },
+    "method": {
+      "title": "Method",
+      "type": "string"
+    },
+    "method_kind": {
+      "title": "Method Kind",
+      "type": "string"
+    },
+    "metric_unit": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Metric Unit"
+    },
+    "native": {
+      "anyOf": [
+        {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Native"
+    },
+    "primary_metric": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Primary Metric"
+    },
+    "privileged": {
+      "default": false,
+      "title": "Privileged",
+      "type": "boolean"
+    },
+    "protocol": {
+      "title": "Protocol",
+      "type": "string"
+    },
+    "protocol_version": {
+      "title": "Protocol Version",
+      "type": "string"
+    },
+    "reproduction": {
+      "$ref": "#/$defs/Reproduction"
+    },
+    "seed": {
+      "title": "Seed",
+      "type": "integer"
+    },
+    "spec": {
+      "default": "r2s-task-result/1.0",
+      "title": "Spec",
+      "type": "string"
+    },
+    "summary": {
+      "$ref": "#/$defs/TaskSummary"
+    },
+    "task_hash": {
+      "title": "Task Hash",
+      "type": "string"
+    },
+    "task_id": {
+      "title": "Task Id",
+      "type": "string"
+    },
+    "task_version": {
+      "title": "Task Version",
+      "type": "string"
+    },
+    "trial": {
+      "title": "Trial",
+      "type": "integer"
+    },
+    "twin_fingerprint": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Twin Fingerprint"
+    }
+  },
+  "required": [
+    "task_id",
+    "task_version",
+    "task_hash",
+    "benchmark",
+    "method",
+    "method_kind",
+    "trial",
+    "seed",
+    "protocol",
+    "protocol_version",
+    "delivered",
+    "reproduction",
+    "summary",
+    "created_at",
+    "lab_version"
+  ],
+  "title": "TaskResult",
+  "type": "object"
+}

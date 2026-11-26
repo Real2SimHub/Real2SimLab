@@ -1,0 +1,66 @@
+"""Scoring: the reproduction protocol, native scorers, headlines, aggregation and statistics."""
+
+from real2simlab.scoring.aggregate import (
+    aggregate,
+    benchmark_scores,
+    bootstrap,
+    row,
+    scored_results,
+    summarize_method,
+)
+from real2simlab.scoring.model import (
+    BenchmarkScore,
+    Estimate,
+    Headline,
+    MethodSummary,
+    MetricRecord,
+    Reproduction,
+    ReproductionStatus,
+    Results,
+    TaskResult,
+    TaskSummary,
+    WindowScore,
+)
+from real2simlab.scoring.native import NativeScorer, get_scorer
+from real2simlab.scoring.reproduction import (
+    PROTOCOL_VERSION,
+    MethodInfo,
+    RunOutput,
+    Scorer,
+    benchmark_of,
+    max_difference,
+    outputs_agree,
+    static_tracks,
+    summarize,
+)
+
+__all__ = [
+    "PROTOCOL_VERSION",
+    "BenchmarkScore",
+    "Estimate",
+    "Headline",
+    "MethodInfo",
+    "MethodSummary",
+    "MetricRecord",
+    "NativeScorer",
+    "Reproduction",
+    "ReproductionStatus",
+    "Results",
+    "RunOutput",
+    "Scorer",
+    "TaskResult",
+    "TaskSummary",
+    "WindowScore",
+    "aggregate",
+    "benchmark_of",
+    "benchmark_scores",
+    "bootstrap",
+    "get_scorer",
+    "max_difference",
+    "outputs_agree",
+    "row",
+    "scored_results",
+    "static_tracks",
+    "summarize",
+    "summarize_method",
+]

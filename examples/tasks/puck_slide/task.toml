@@ -1,0 +1,55 @@
+spec = "r2s-task/1.0"
+id = "examples/puck_slide"
+version = "1.0.0"
+title = "Puck launched across a floor"
+description = "A red puck slides across a flat grey floor. The puck is launched from x = -0.6 m and its motion is recorded for 2 seconds."
+license = "CC0-1.0"
+redistributable = true
+tags = [
+    "example",
+    "puck",
+    "sliding",
+]
+visibility = "calibrated"
+
+[source]
+dataset = "Real2SimLab puck-slide recording"
+version = "1.0"
+notes = "Rendered by Real2SimLab (scripts/make_puck_recording.py)."
+
+[delivery]
+environment = "r2s-python"
+output_format = "tracks"
+convention = "r2s"
+agent_time_budget_s = 1200
+run_timeout_s = 120
+
+[delivery.resources]
+gpu = false
+cpus = 2.0
+memory_mb = 4096
+
+[delivery.program]
+max_size_mb = 50.0
+allow_video = false
+forbidden_suffixes = []
+
+[delivery.output]
+fps = 30.0
+num_frames = 60
+objects = [
+    "puck",
+]
+
+[scoring]
+protocol = "reproduction"
+metrics = [
+    "traj3d_mean",
+    "traj3d_final",
+    "traj2d_norm_mean",
+]
+primary = "traj3d_mean"
+
+[scoring.metric_options]
+
+[metadata]

@@ -1,0 +1,117 @@
+Real2SimLab
+Copyright 2026 Real2SimLab contributors
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+
+Benchmark code and data
+=======================
+
+No third-party benchmark code or data is bundled with Real2SimLab (the package, this
+repository or the published images). Adapters download them at run time, at pinned versions,
+into the user's cache, under their own licenses:
+
+- 4DCodeBench (https://github.com/4DCodeBench/4DCodeBench, commit
+  6c466be34107d7f388f30f97bf059b68ba1a21b0; Hugging Face datasets 4DCodeBench/Dataset-Synthetic
+  and 4DCodeBench/Dataset-Real-World): no license is declared for the code or the data.
+  Real2SimLab neither copies nor redistributes them; tasks built from them are marked not
+  redistributable. 4DCodeBench's own Docker images are built by each user from its checkout
+  and never published by this project.
+- IRIS (https://huggingface.co/datasets/rasulkhanbayov/IRIS, revision
+  0529a5e0cbbf45d43de2ee1ed7cb98e18de03782): CC-BY-NC-4.0 (non-commercial). Khanbayov,
+  Barhdadi, Serpedin, Kurban, "IRIS: A Real-World Benchmark for Inverse Recovery and
+  Identification of Physical Dynamic Systems from Monocular Video", ECCV 2026. Downloaded when
+  tasks are built, never redistributed.
+- PhysCodeGym (https://github.com/ShaoShuai0605/PhysCodeGym, commit
+  de1c8b75cddff0054f77b6322a979759e7a01f81): code under the MIT license, run from the user's
+  cache; its videos (Hugging Face dataset ShaoShuai0605/PhysCodeGym) keep their sources'
+  licenses and are not redistributed.
+- Physics-IQ (https://github.com/google-deepmind/physics-IQ-benchmark, commit
+  d3f3de16a9c66b4d3bfd6bdb5518570e8b72ad48): code under the Apache License 2.0, run from the
+  user's cache; videos under CC-BY-4.0, downloaded from the public Google Cloud Storage bucket
+  physics-iq-benchmark (or the Hugging Face dataset Anates-Labs-Research/Physics-IQ-Verified)
+  when tasks are built, never redistributed. Motamed, Culp, Swersky, Jaini, Geirhos, "Do
+  generative video models understand physical principles?", arXiv:2501.09038.
+
+- Video2World (https://github.com/AetherLabsAI/Video2World, commit
+  df0e00b7893b24968e87c5a51a67d824482e431b): code under the Apache License 2.0, run from the
+  user's cache. Its dataset (Hugging Face AetherLabs-AI/Video2World, revision
+  9cac08429be06ad190b22d6e172af2f815024e3f) adapts samples from other datasets, which keep their
+  own terms: DROID (CC-BY-4.0, Khazatsky et al., "DROID: A Large-Scale In-The-Wild Robot
+  Manipulation Dataset", 2024), real2sim-eval and PhysTwin (MIT), FurnitureBench (no license
+  declared for its data). Downloaded when tasks are built, never redistributed.
+- PhySimCode (dataset https://huggingface.co/datasets/SourajaKundu123/PhySimCode, revision
+  1d03cd78fe25261af9c1f39d64c5fc438985b8eb): MIT, downloaded when tasks are built, never
+  redistributed. Its evaluation code (https://github.com/SourajaKundu/PhySimCode, commit
+  e876cd202228b27491ea9e391926246bf15c8749) declares no license: it is fetched from its authors
+  when tasks are scored and is not copied or redistributed. Kundu, Gupta, Julin, Zhao, Xie, Jeni,
+  "PhySimCode: A Benchmark and Evaluation Method for Physics Video to Code Generation",
+  arXiv:2610.15722.
+
+The example recording in examples/raw/puck_slide was rendered by Real2SimLab and is CC0-1.0.
+
+Icons and trademarks
+====================
+
+The logo (docs/assets/logo-*.svg) and the projects' symbols (favicon.svg and symbol-*.svg there)
+are part of Real2SimLab (Apache-2.0). They come from the logo family of Real2SimHub (assets/brand
+in https://github.com/Real2SimHub/Real2SimHub.github.io, with its drawing script); the logo's
+lettering is outlined from the fonts Outfit and Chakra Petch (SIL Open Font License 1.1). scripts/make_icons.py writes the icons in docs/assets/icons, also embedded in the
+teaser and the social preview:
+
+- Each agent's and benchmark's own icon, as it publishes it, scaled and placed on a tile: the
+  project's logo (Claude Code, Gemini CLI, OpenCode, mini-swe-agent, Harbor, Physics-IQ,
+  4DCodeBench, PhysCodeGym, PhySimCode) or, without one, its GitHub organization's avatar
+  (Codex: OpenAI; Video2World: Aether AI; IRIS: Kurban Intelligence Lab). Claude Code's
+  favicon is published only as a small raster, so its tile is redrawn from the vector spark
+  in Claude Code's documentation logo, in the favicon's colours.
+- The mark of the institution that publishes each of them (a benchmark's first authors'
+  institution): the GitHub organization avatars of OpenAI, Anthropic, Google, Anomaly, Laude
+  Institute, Google DeepMind and Aether AI; Shanghai Jiao Tong University's emblem from its
+  visual identity site (vi.sjtu.edu.cn); the seals of Johns Hopkins University and Carnegie
+  Mellon University as their brand guidelines publish them (the copies English Wikipedia uses
+  as non-free logos); and, from Wikimedia Commons, the Princeton University shield (public
+  domain) and the emblem cropped from Hamad Bin Khalifa University's 2016 logo (CC BY-SA 4.0,
+  https://commons.wikimedia.org/wiki/File:HBKU_Logo,_2016.jpg; the cropped icon,
+  docs/assets/icons/org-hbku.svg, is under the same license).
+- Generic glyphs for the Lab's own steps and for pipelines: Material Design Icons
+  (Pictogrammers, https://pictogrammers.com), Apache-2.0, as bundled with mkdocs-material.
+
+The source URL of every logo is in scripts/make_icons.py. The README's badges are rendered by
+shields.io at view time and are not stored here.
+
+These names and logos (OpenAI, Codex, Anthropic, Claude, Claude Code, Google, Gemini, Google
+DeepMind, the benchmarks', agents', companies' and universities' names and marks) are
+trademarks of their owners. They are used only to identify the software and benchmarks
+Real2SimLab runs and who publishes them; no affiliation or endorsement is implied.
+
+Runtime images
+==============
+
+`r2s env build` builds, and the project publishes, these images from the Dockerfiles in
+docker/. They contain third-party software under its own license:
+
+- r2s-python: Debian 12 (bookworm) packages, including ffmpeg (LGPL/GPL as packaged by
+  Debian; source at https://sources.debian.org), Python 3.11 (PSF License), NumPy and SciPy
+  (BSD-3-Clause), and the Real2SimLab twin SDK (Apache-2.0).
+- r2s-verifier: r2s-python plus pydantic and tomli-w (MIT).
+- r2s-agent-codex: r2s-python plus Node.js 22 (MIT) and the OpenAI Codex CLI (Apache-2.0).
+- r2s-agent-gemini-cli: r2s-python plus Node.js 22 (MIT) and Gemini CLI (Apache-2.0).
+- r2s-agent-opencode: r2s-python plus Node.js 22 (MIT) and OpenCode (MIT).
+- r2s-blender-4.0: r2s-python plus Blender 4.0.2 (GPL-2.0-or-later), the official binary
+  release from https://download.blender.org/release/Blender4.0/ (its source:
+  https://download.blender.org/source/blender-4.0.2.tar.xz). Real2SimLab runs Blender as a
+  separate program.
+
+Not published, built by each user:
+
+- r2s-agent-codex-blender: r2s-blender-4.0 plus Node.js 22 (MIT) and the OpenAI Codex CLI
+  (Apache-2.0); built locally only because of its size.
+- r2s-video2world: r2s-python plus PyTorch (BSD-3-Clause), ManiSkill and SAPIEN (Apache-2.0)
+  and their dependencies, and ManiSkill assets: ManiSkill-XArm6 (Apache-2.0), the Bridge
+  real2sim assets (MIT) and ManiSkill-WidowX250S (no license declared, so this image is never
+  published).
+- r2s-agent-codex-video2world: r2s-video2world plus Node.js 22 (MIT) and the OpenAI Codex CLI.
+- r2s-physimcode: r2s-python plus Matplotlib (PSF-based Matplotlib license).
+
+- r2s-agent-claude-code: r2s-python plus Claude Code, which is proprietary software of
+  Anthropic PBC ("All rights reserved"; https://code.claude.com/docs/en/legal-and-compliance).

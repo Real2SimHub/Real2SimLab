@@ -1,0 +1,297 @@
+{
+  "$defs": {
+    "BenchmarkSelection": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "options": {
+          "additionalProperties": true,
+          "title": "Options",
+          "type": "object"
+        },
+        "select": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Select"
+        },
+        "tiers": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Tiers"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "BenchmarkSelection",
+      "type": "object"
+    },
+    "Budget": {
+      "additionalProperties": false,
+      "properties": {
+        "max_agent_runs": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Agent Runs"
+        },
+        "max_cost_usd": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Cost Usd"
+        },
+        "max_wall_time_s": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Wall Time S"
+        }
+      },
+      "title": "Budget",
+      "type": "object"
+    },
+    "MethodEntry": {
+      "additionalProperties": false,
+      "description": "One method of the experiment: its registered name, a label, and its options.",
+      "properties": {
+        "label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Label"
+        },
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "options": {
+          "additionalProperties": true,
+          "title": "Options",
+          "type": "object"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "MethodEntry",
+      "type": "object"
+    },
+    "RunSettings": {
+      "additionalProperties": false,
+      "properties": {
+        "agent_concurrency": {
+          "default": 2,
+          "exclusiveMinimum": 0,
+          "title": "Agent Concurrency",
+          "type": "integer"
+        },
+        "backend": {
+          "default": "docker",
+          "title": "Backend",
+          "type": "string"
+        },
+        "backend_options": {
+          "additionalProperties": true,
+          "title": "Backend Options",
+          "type": "object"
+        },
+        "check_reproducibility": {
+          "default": false,
+          "title": "Check Reproducibility",
+          "type": "boolean"
+        },
+        "concurrency": {
+          "default": 4,
+          "exclusiveMinimum": 0,
+          "title": "Concurrency",
+          "type": "integer"
+        },
+        "retries": {
+          "default": 2,
+          "minimum": 0,
+          "title": "Retries",
+          "type": "integer"
+        },
+        "seeds": {
+          "default": [
+            0
+          ],
+          "items": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "title": "Seeds",
+          "type": "array"
+        },
+        "trials": {
+          "default": 1,
+          "exclusiveMinimum": 0,
+          "title": "Trials",
+          "type": "integer"
+        }
+      },
+      "title": "RunSettings",
+      "type": "object"
+    },
+    "TaskSelection": {
+      "additionalProperties": false,
+      "properties": {
+        "benchmarks": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/BenchmarkSelection"
+          },
+          "title": "Benchmarks",
+          "type": "array"
+        },
+        "exclude": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Exclude",
+          "type": "array"
+        },
+        "include": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Include",
+          "type": "array"
+        },
+        "paths": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Paths",
+          "type": "array"
+        }
+      },
+      "title": "TaskSelection",
+      "type": "object"
+    }
+  },
+  "$id": "r2s-experiment.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "budget": {
+      "$ref": "#/$defs/Budget",
+      "default": {
+        "max_agent_runs": null,
+        "max_cost_usd": null,
+        "max_wall_time_s": null
+      }
+    },
+    "description": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Description"
+    },
+    "methods": {
+      "items": {
+        "$ref": "#/$defs/MethodEntry"
+      },
+      "minItems": 1,
+      "title": "Methods",
+      "type": "array"
+    },
+    "name": {
+      "minLength": 1,
+      "title": "Name",
+      "type": "string"
+    },
+    "run": {
+      "$ref": "#/$defs/RunSettings",
+      "default": {
+        "agent_concurrency": 2,
+        "backend": "docker",
+        "backend_options": {},
+        "check_reproducibility": false,
+        "concurrency": 4,
+        "retries": 2,
+        "seeds": [
+          0
+        ],
+        "trials": 1
+      }
+    },
+    "spec": {
+      "default": "r2s-experiment/1.0",
+      "title": "Spec",
+      "type": "string"
+    },
+    "tasks": {
+      "$ref": "#/$defs/TaskSelection"
+    }
+  },
+  "required": [
+    "name",
+    "tasks",
+    "methods"
+  ],
+  "title": "ExperimentConfig",
+  "type": "object"
+}

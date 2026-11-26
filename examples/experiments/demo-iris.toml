@@ -1,0 +1,33 @@
+# The demonstration run on IRIS (docs/results.md). Downloads the IRIS dropping-ball videos
+# (CC-BY-NC-4.0, about 620 MB) into the cache on first use.
+#   r2s run examples/experiments/demo-iris.toml --out runs/demo-iris
+spec = "r2s-experiment/1.0"
+name = "demo-iris"
+description = "Codex, the reference baselines and a hand-written twin on IRIS dropping_ball (3 tasks)."
+
+[[tasks.benchmarks]]
+name = "iris"
+
+[[methods]]
+name = "codex"
+reasoning_effort = "medium"
+
+[[methods]]
+name = "static"
+
+[[methods]]
+name = "constant_velocity"
+
+[[methods]]
+name = "program"
+label = "hand-written"
+path = "../twins/iris"
+
+[run]
+backend = "docker"
+concurrency = 4
+agent_concurrency = 2
+check_reproducibility = true
+
+[budget]
+max_agent_runs = 3

@@ -1,0 +1,36 @@
+# The demonstration run on 4DCodeBench (docs/results.md): Codex on three synthetic cases
+# with the official protocol, and on one with the Lab's frozen re-run.
+#   r2s run examples/experiments/demo-4dcodebench.toml --out runs/demo-4dcodebench
+# Needs a GPU and 4DCodeBench's own images, built from its checkout (no license: never
+# redistribute them): 4dcb/agent:dev (Blender 5.2 and the agent CLIs) and 4dcb/scorer:dev.
+# See docs/benchmarks/fourdcodebench.md.
+spec = "r2s-experiment/1.0"
+name = "demo-4dcodebench"
+description = "Codex on 4DCodeBench synthetic cases: official scorer (native) and frozen re-run (lab)."
+
+[[tasks.benchmarks]]
+name = "fourdcodebench"
+options = { real = [] }
+
+[tasks]
+include = [
+  "fourdcodebench/synthetic/b_30/native",
+  "fourdcodebench/synthetic/b_12/native",
+  "fourdcodebench/synthetic/g_12/native",
+  "fourdcodebench/synthetic/b_30/lab",
+]
+
+[[methods]]
+name = "codex"
+reasoning_effort = "medium"
+image = "4dcb/agent:dev"      # the official agent image (Blender 5.2, 4DCodeBench's checker)
+time_budget_s = 1200          # 20 minutes, as for the other demos (the official harness allows 60)
+
+[run]
+backend = "docker"
+concurrency = 2
+agent_concurrency = 2
+check_reproducibility = false
+
+[budget]
+max_agent_runs = 4

@@ -1,0 +1,31 @@
+# The demonstration run on the synthetic suite (docs/results.md).
+#   r2s run examples/experiments/demo-synthetic.toml --out runs/demo-synthetic
+# Needs the r2s-python and r2s-agent-codex images and a Codex login on the host.
+spec = "r2s-experiment/1.0"
+name = "demo-synthetic"
+description = "Codex and the reference baselines on the synthetic suite (10 tasks)."
+
+[[tasks.benchmarks]]
+name = "synthetic"
+
+[[methods]]
+name = "codex"
+reasoning_effort = "medium"
+
+[[methods]]
+name = "oracle"
+
+[[methods]]
+name = "static"
+
+[[methods]]
+name = "constant_velocity"
+
+[run]
+backend = "docker"
+concurrency = 4
+agent_concurrency = 2
+check_reproducibility = true
+
+[budget]
+max_agent_runs = 10

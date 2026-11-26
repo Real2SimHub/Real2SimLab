@@ -1,0 +1,34 @@
+# The demonstration run on Physics-IQ (docs/results.md): Codex builds a program for each of six
+# scenarios, one or two per physics category, seen from the center; the frozen program is re-run
+# offline and its video scored with Physics-IQ's own metrics. Downloads the scenarios' videos
+# (CC-BY-4.0, about 20 MB each) into the cache on first use. Codex gets Blender in its session
+# through its own image, built locally:
+#   r2s env build r2s-agent-codex-blender
+#   r2s run examples/experiments/demo-physicsiq.toml --out runs/demo-physicsiq
+spec = "r2s-experiment/1.0"
+name = "demo-physicsiq"
+description = "Codex on six Physics-IQ scenarios (center view, frozen re-run); the scorer adds the static and second-take references."
+
+[[tasks.benchmarks]]
+name = "physicsiq"
+select = [
+    "ball-and-block-fall/center",  # solid mechanics
+    "block-domino/center",         # solid mechanics
+    "fill-glass-red-drink/center", # fluid dynamics
+    "mirror-ball-fall/center",     # optics
+    "lit-candle/center",           # thermodynamics
+    "magnet-domino/center",        # magnetism
+]
+options = { variants = ["rerun"] }
+
+[[methods]]
+name = "codex"
+options = { reasoning_effort = "medium", time_budget_s = 1200, image = "r2s-agent-codex-blender" }
+
+[run]
+backend = "docker"
+concurrency = 2
+agent_concurrency = 2
+
+[budget]
+max_agent_runs = 6

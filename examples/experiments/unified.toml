@@ -1,0 +1,66 @@
+# One agent on every benchmark the Lab adapts, on the tasks of the example run's scorecard
+# (docs/results.md): one run, one scorecard.
+#   r2s run examples/experiments/unified.toml --out runs/unified
+#
+# Codex works in the image that matches each task's runtime (r2s-agent-codex,
+# -blender, -physimcode, -video2world; 4DCodeBench's own agent image). Build them first:
+#   r2s env build r2s-agent-codex r2s-agent-codex-blender r2s-agent-codex-physimcode \
+#       r2s-agent-codex-video2world
+# Each task keeps its benchmark's time budget: 20 minutes on synthetic and IRIS, 30 on
+# PhySimCode, 60 on the others. The example run gave Physics-IQ and 4DCodeBench 20 minutes,
+# as demo-physicsiq.toml and demo-4dcodebench.toml do.
+# Physics-IQ, PhysCodeGym and Video2World need a GPU; 4DCodeBench needs its own images
+# (docs/benchmarks/fourdcodebench.md). Leave out what this machine cannot run: `r2s doctor`.
+# Third-party data is downloaded into the cache at a pinned revision on first use.
+spec = "r2s-experiment/1.0"
+name = "unified"
+description = "Codex on 19 tasks of the six benchmarks and the synthetic suite, each scored its own way."
+
+[[tasks.benchmarks]]
+name = "synthetic"
+select = ["bouncing_ball"]
+tiers = ["calibrated"]
+
+[[tasks.benchmarks]]
+name = "iris"                  # drop_050, drop_100, drop_150
+
+[[tasks.benchmarks]]
+name = "physicsiq"
+select = [
+    "ball-and-block-fall/center",  # solid mechanics
+    "block-domino/center",         # solid mechanics
+    "fill-glass-red-drink/center", # fluid dynamics
+    "mirror-ball-fall/center",     # optics
+    "lit-candle/center",           # thermodynamics
+    "magnet-domino/center",        # magnetism
+]
+options = { variants = ["rerun"] }
+
+[[tasks.benchmarks]]
+name = "physimcode"            # three SciPy samples
+
+[[tasks.benchmarks]]
+name = "physcodegym"
+select = ["physics_iq_0001_ball_and_block_fall"]
+options = { variants = ["rerun"] }
+
+[[tasks.benchmarks]]
+name = "video2world"
+select = ["twin_pusht_demo_0", "droid_iris_2023_03_02_16h_02m_41s_bowl_hand"]
+
+[[tasks.benchmarks]]
+name = "fourdcodebench"        # synthetic B_30, B_12, G_12
+options = { real = [], variants = ["native"] }
+
+[[methods]]
+name = "codex"
+options = { reasoning_effort = "medium" }
+
+[run]
+backend = "docker"
+concurrency = 2
+agent_concurrency = 2
+check_reproducibility = true
+
+[budget]
+max_agent_runs = 19

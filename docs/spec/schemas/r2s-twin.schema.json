@@ -1,0 +1,259 @@
+{
+  "$defs": {
+    "AgentInfo": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Version"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "AgentInfo",
+      "type": "object"
+    },
+    "Asset": {
+      "additionalProperties": false,
+      "description": "A large file the program needs, stored in ``assets/`` and verified by its digest.",
+      "properties": {
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "sha256": {
+          "title": "Sha256",
+          "type": "string"
+        },
+        "size": {
+          "minimum": 0,
+          "title": "Size",
+          "type": "integer"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Url"
+        }
+      },
+      "required": [
+        "path",
+        "sha256",
+        "size"
+      ],
+      "title": "Asset",
+      "type": "object"
+    },
+    "EnvironmentRef": {
+      "additionalProperties": false,
+      "description": "The runtime image the program runs in.",
+      "properties": {
+        "digest": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Digest"
+        },
+        "image": {
+          "minLength": 1,
+          "title": "Image",
+          "type": "string"
+        }
+      },
+      "required": [
+        "image"
+      ],
+      "title": "EnvironmentRef",
+      "type": "object"
+    },
+    "Origin": {
+      "additionalProperties": false,
+      "description": "Who built the twin, for which task, and when.",
+      "properties": {
+        "agent": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AgentInfo"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "method": {
+          "minLength": 1,
+          "title": "Method",
+          "type": "string"
+        },
+        "model": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Model"
+        },
+        "notes": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Notes"
+        },
+        "privileged": {
+          "default": false,
+          "title": "Privileged",
+          "type": "boolean"
+        },
+        "task_id": {
+          "minLength": 1,
+          "title": "Task Id",
+          "type": "string"
+        },
+        "task_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Task Version"
+        }
+      },
+      "required": [
+        "method",
+        "task_id",
+        "created_at"
+      ],
+      "title": "Origin",
+      "type": "object"
+    },
+    "Runtime": {
+      "additionalProperties": false,
+      "description": "Where the program and its output appear inside the sandbox.",
+      "properties": {
+        "output_path": {
+          "default": "/r2s/output",
+          "title": "Output Path",
+          "type": "string"
+        },
+        "program_path": {
+          "default": "/r2s/program",
+          "title": "Program Path",
+          "type": "string"
+        },
+        "replaceable_output": {
+          "default": false,
+          "title": "Replaceable Output",
+          "type": "boolean"
+        }
+      },
+      "title": "Runtime",
+      "type": "object"
+    }
+  },
+  "$id": "r2s-twin.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "The content of ``twin.json``. Written by the Lab or a method adapter, never by an agent.",
+  "properties": {
+    "assets": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/Asset"
+      },
+      "title": "Assets",
+      "type": "array"
+    },
+    "entrypoint": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Entrypoint",
+      "type": "array"
+    },
+    "environment": {
+      "$ref": "#/$defs/EnvironmentRef"
+    },
+    "origin": {
+      "$ref": "#/$defs/Origin"
+    },
+    "output_format": {
+      "minLength": 1,
+      "title": "Output Format",
+      "type": "string"
+    },
+    "runtime": {
+      "$ref": "#/$defs/Runtime",
+      "default": {
+        "output_path": "/r2s/output",
+        "program_path": "/r2s/program",
+        "replaceable_output": false
+      }
+    },
+    "spec": {
+      "default": "r2s-twin/1.0",
+      "title": "Spec",
+      "type": "string"
+    },
+    "twin_id": {
+      "title": "Twin Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "twin_id",
+    "entrypoint",
+    "environment",
+    "output_format",
+    "origin"
+  ],
+  "title": "TwinManifest",
+  "type": "object"
+}

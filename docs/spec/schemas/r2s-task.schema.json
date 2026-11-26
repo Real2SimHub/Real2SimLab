@@ -1,0 +1,452 @@
+{
+  "$defs": {
+    "Delivery": {
+      "additionalProperties": false,
+      "description": "What a method must deliver and how it is run.",
+      "properties": {
+        "agent_time_budget_s": {
+          "default": 1200,
+          "exclusiveMinimum": 0,
+          "title": "Agent Time Budget S",
+          "type": "integer"
+        },
+        "convention": {
+          "$ref": "#/$defs/DeliveryConvention",
+          "default": "r2s"
+        },
+        "environment": {
+          "minLength": 1,
+          "title": "Environment",
+          "type": "string"
+        },
+        "output": {
+          "$ref": "#/$defs/OutputRequirements",
+          "default": {
+            "fps": null,
+            "height": null,
+            "num_frames": null,
+            "objects": [],
+            "width": null
+          }
+        },
+        "output_format": {
+          "minLength": 1,
+          "title": "Output Format",
+          "type": "string"
+        },
+        "program": {
+          "$ref": "#/$defs/ProgramRules",
+          "default": {
+            "allow_video": false,
+            "forbidden_suffixes": [],
+            "max_size_mb": 50.0
+          }
+        },
+        "resources": {
+          "$ref": "#/$defs/Resources",
+          "default": {
+            "cpus": 2.0,
+            "gpu": false,
+            "memory_mb": 4096
+          }
+        },
+        "run_timeout_s": {
+          "default": 300,
+          "exclusiveMinimum": 0,
+          "title": "Run Timeout S",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "environment",
+        "output_format"
+      ],
+      "title": "Delivery",
+      "type": "object"
+    },
+    "DeliveryConvention": {
+      "description": "What a method hands in and how its program is run.",
+      "enum": [
+        "r2s",
+        "build_sh_world",
+        "blender_scene",
+        "video2sim_package"
+      ],
+      "title": "DeliveryConvention",
+      "type": "string"
+    },
+    "JsonValue": {},
+    "NativeScoring": {
+      "additionalProperties": false,
+      "description": "The official scorer of the benchmark, for ``protocol = \"native\"``.",
+      "properties": {
+        "options": {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "title": "Options",
+          "type": "object"
+        },
+        "scorer": {
+          "minLength": 1,
+          "title": "Scorer",
+          "type": "string"
+        }
+      },
+      "required": [
+        "scorer"
+      ],
+      "title": "NativeScoring",
+      "type": "object"
+    },
+    "OutputRequirements": {
+      "additionalProperties": false,
+      "description": "What the delivery's output must contain, told to the method.",
+      "properties": {
+        "fps": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Fps"
+        },
+        "height": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Height"
+        },
+        "num_frames": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Num Frames"
+        },
+        "objects": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Objects",
+          "type": "array"
+        },
+        "width": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Width"
+        }
+      },
+      "title": "OutputRequirements",
+      "type": "object"
+    },
+    "ProgramRules": {
+      "additionalProperties": false,
+      "description": "Limits on the delivered ``program/`` directory.",
+      "properties": {
+        "allow_video": {
+          "default": false,
+          "title": "Allow Video",
+          "type": "boolean"
+        },
+        "forbidden_suffixes": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Forbidden Suffixes",
+          "type": "array"
+        },
+        "max_size_mb": {
+          "default": 50.0,
+          "exclusiveMinimum": 0,
+          "title": "Max Size Mb",
+          "type": "number"
+        }
+      },
+      "title": "ProgramRules",
+      "type": "object"
+    },
+    "Protocol": {
+      "description": "How a task is scored.",
+      "enum": [
+        "reproduction",
+        "native"
+      ],
+      "title": "Protocol",
+      "type": "string"
+    },
+    "Resources": {
+      "additionalProperties": false,
+      "description": "Resources one run of the twin may use.",
+      "properties": {
+        "cpus": {
+          "default": 2.0,
+          "exclusiveMinimum": 0,
+          "title": "Cpus",
+          "type": "number"
+        },
+        "gpu": {
+          "default": false,
+          "title": "Gpu",
+          "type": "boolean"
+        },
+        "memory_mb": {
+          "default": 4096,
+          "exclusiveMinimum": 0,
+          "title": "Memory Mb",
+          "type": "integer"
+        }
+      },
+      "title": "Resources",
+      "type": "object"
+    },
+    "ScoringConfig": {
+      "additionalProperties": false,
+      "description": "How the task is scored.",
+      "properties": {
+        "metric_options": {
+          "additionalProperties": {
+            "additionalProperties": {
+              "$ref": "#/$defs/JsonValue"
+            },
+            "type": "object"
+          },
+          "title": "Metric Options",
+          "type": "object"
+        },
+        "metrics": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Metrics",
+          "type": "array"
+        },
+        "native": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/NativeScoring"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "primary": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Primary"
+        },
+        "protocol": {
+          "$ref": "#/$defs/Protocol"
+        }
+      },
+      "required": [
+        "protocol"
+      ],
+      "title": "ScoringConfig",
+      "type": "object"
+    },
+    "SourceInfo": {
+      "additionalProperties": false,
+      "description": "Where the task's data comes from.",
+      "properties": {
+        "citation": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Citation"
+        },
+        "dataset": {
+          "minLength": 1,
+          "title": "Dataset",
+          "type": "string"
+        },
+        "notes": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Notes"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Url"
+        },
+        "version": {
+          "minLength": 1,
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "dataset",
+        "version"
+      ],
+      "title": "SourceInfo",
+      "type": "object"
+    },
+    "Split": {
+      "description": "What a task is for.",
+      "enum": [
+        "eval",
+        "train"
+      ],
+      "title": "Split",
+      "type": "string"
+    }
+  },
+  "$id": "r2s-task.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "The content of ``task.toml``.",
+  "properties": {
+    "delivery": {
+      "$ref": "#/$defs/Delivery"
+    },
+    "description": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Description"
+    },
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "license": {
+      "minLength": 1,
+      "title": "License",
+      "type": "string"
+    },
+    "metadata": {
+      "additionalProperties": {
+        "$ref": "#/$defs/JsonValue"
+      },
+      "title": "Metadata",
+      "type": "object"
+    },
+    "redistributable": {
+      "title": "Redistributable",
+      "type": "boolean"
+    },
+    "scoring": {
+      "$ref": "#/$defs/ScoringConfig"
+    },
+    "source": {
+      "$ref": "#/$defs/SourceInfo"
+    },
+    "spec": {
+      "default": "r2s-task/1.0",
+      "title": "Spec",
+      "type": "string"
+    },
+    "split": {
+      "$ref": "#/$defs/Split",
+      "default": "eval"
+    },
+    "tags": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Tags",
+      "type": "array"
+    },
+    "title": {
+      "minLength": 1,
+      "title": "Title",
+      "type": "string"
+    },
+    "version": {
+      "minLength": 1,
+      "title": "Version",
+      "type": "string"
+    },
+    "visibility": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Visibility"
+    }
+  },
+  "required": [
+    "id",
+    "version",
+    "title",
+    "source",
+    "license",
+    "redistributable",
+    "delivery",
+    "scoring"
+  ],
+  "title": "TaskConfig",
+  "type": "object"
+}

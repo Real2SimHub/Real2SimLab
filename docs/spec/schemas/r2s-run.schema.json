@@ -1,0 +1,214 @@
+{
+  "$defs": {
+    "ImageInfo": {
+      "additionalProperties": false,
+      "properties": {
+        "digest": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Digest"
+        },
+        "reference": {
+          "title": "Reference",
+          "type": "string"
+        }
+      },
+      "required": [
+        "reference"
+      ],
+      "title": "ImageInfo",
+      "type": "object"
+    },
+    "RunLimits": {
+      "additionalProperties": false,
+      "properties": {
+        "cpus": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cpus"
+        },
+        "gpu": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Gpu"
+        },
+        "memory_mb": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Memory Mb"
+        },
+        "timeout_s": {
+          "exclusiveMinimum": 0,
+          "title": "Timeout S",
+          "type": "number"
+        }
+      },
+      "required": [
+        "timeout_s"
+      ],
+      "title": "RunLimits",
+      "type": "object"
+    },
+    "RunStatus": {
+      "description": "How one run ended.",
+      "enum": [
+        "succeeded",
+        "failed",
+        "timed_out",
+        "invalid_output",
+        "infra_error"
+      ],
+      "title": "RunStatus",
+      "type": "string"
+    }
+  },
+  "$id": "r2s-run.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "One run of a frozen twin. Holds no host paths, so a run directory can be moved.",
+  "properties": {
+    "attempt": {
+      "default": 1,
+      "title": "Attempt",
+      "type": "integer"
+    },
+    "backend": {
+      "additionalProperties": true,
+      "title": "Backend",
+      "type": "object"
+    },
+    "duration_s": {
+      "title": "Duration S",
+      "type": "number"
+    },
+    "exit_code": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Exit Code"
+    },
+    "image": {
+      "$ref": "#/$defs/ImageInfo"
+    },
+    "lab_version": {
+      "title": "Lab Version",
+      "type": "string"
+    },
+    "label": {
+      "default": "run",
+      "title": "Label",
+      "type": "string"
+    },
+    "limits": {
+      "$ref": "#/$defs/RunLimits"
+    },
+    "network": {
+      "default": "none",
+      "title": "Network",
+      "type": "string"
+    },
+    "output_fingerprint": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Output Fingerprint"
+    },
+    "output_format": {
+      "title": "Output Format",
+      "type": "string"
+    },
+    "problems": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Problems",
+      "type": "array"
+    },
+    "program_fingerprint": {
+      "title": "Program Fingerprint",
+      "type": "string"
+    },
+    "seed": {
+      "title": "Seed",
+      "type": "integer"
+    },
+    "spec": {
+      "default": "r2s-run/1.0",
+      "title": "Spec",
+      "type": "string"
+    },
+    "started_at": {
+      "format": "date-time",
+      "title": "Started At",
+      "type": "string"
+    },
+    "status": {
+      "$ref": "#/$defs/RunStatus"
+    },
+    "twin_fingerprint": {
+      "title": "Twin Fingerprint",
+      "type": "string"
+    },
+    "twin_id": {
+      "title": "Twin Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "twin_id",
+    "twin_fingerprint",
+    "program_fingerprint",
+    "image",
+    "backend",
+    "seed",
+    "limits",
+    "started_at",
+    "duration_s",
+    "status",
+    "output_format",
+    "lab_version"
+  ],
+  "title": "RunRecord",
+  "type": "object"
+}

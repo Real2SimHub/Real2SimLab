@@ -1,0 +1,12 @@
+{
+  "spec": "r2s-tracks/1.0",
+  "fps": 30.0,
+  "num_frames": 60,
+  "objects": [
+    "puck"
+  ],
+  "frame": {
+    "length_unit": "m",
+    "up_axis": "+z"
+  }
+}

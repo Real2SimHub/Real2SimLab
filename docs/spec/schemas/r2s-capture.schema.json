@@ -1,0 +1,901 @@
+{
+  "$defs": {
+    "DepthStream": {
+      "additionalProperties": false,
+      "description": "Per-frame depth maps aligned with the view's RGB frames.",
+      "properties": {
+        "kind": {
+          "enum": [
+            "metric",
+            "relative"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        },
+        "source": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source"
+        },
+        "unit": {
+          "enum": [
+            "m",
+            "mm"
+          ],
+          "title": "Unit",
+          "type": "string"
+        }
+      },
+      "required": [
+        "path",
+        "unit",
+        "kind",
+        "provenance"
+      ],
+      "title": "DepthStream",
+      "type": "object"
+    },
+    "MaskStream": {
+      "additionalProperties": false,
+      "description": "Per-frame object masks aligned with the view's RGB frames.",
+      "properties": {
+        "format": {
+          "minLength": 1,
+          "title": "Format",
+          "type": "string"
+        },
+        "labels": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Labels",
+          "type": "object"
+        },
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        },
+        "source": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source"
+        }
+      },
+      "required": [
+        "path",
+        "format",
+        "provenance"
+      ],
+      "title": "MaskStream",
+      "type": "object"
+    },
+    "PerFrameExtrinsics": {
+      "additionalProperties": false,
+      "description": "Camera-to-world transforms of a moving camera, one per frame of the file.\n\n``path`` names a ``.npy`` file of shape ``(F, 4, 4)``, where ``F`` is at least the end of\nthe view's visible frame range.",
+      "properties": {
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        },
+        "source": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source"
+        }
+      },
+      "required": [
+        "path",
+        "provenance"
+      ],
+      "title": "PerFrameExtrinsics",
+      "type": "object"
+    },
+    "Provenance": {
+      "description": "How a value was obtained.",
+      "enum": [
+        "measured",
+        "estimated",
+        "default",
+        "human_edited",
+        "synthetic"
+      ],
+      "title": "Provenance",
+      "type": "string"
+    },
+    "RobotStream": {
+      "additionalProperties": false,
+      "description": "A robot recording. Trajectory keys follow the XPolicyLab naming convention.",
+      "properties": {
+        "action_type": {
+          "enum": [
+            "joint",
+            "ee"
+          ],
+          "title": "Action Type",
+          "type": "string"
+        },
+        "control_freq": {
+          "exclusiveMinimum": 0,
+          "title": "Control Freq",
+          "type": "number"
+        },
+        "time_offset": {
+          "$ref": "#/$defs/Sourced_float_"
+        },
+        "trajectory": {
+          "title": "Trajectory",
+          "type": "string"
+        },
+        "urdf": {
+          "title": "Urdf",
+          "type": "string"
+        }
+      },
+      "required": [
+        "urdf",
+        "action_type",
+        "control_freq",
+        "trajectory",
+        "time_offset"
+      ],
+      "title": "RobotStream",
+      "type": "object"
+    },
+    "SceneInfo": {
+      "additionalProperties": false,
+      "description": "Known scene content beyond the media.",
+      "properties": {
+        "environment": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Environment"
+        },
+        "objects": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/SceneObject"
+          },
+          "title": "Objects",
+          "type": "array"
+        }
+      },
+      "title": "SceneInfo",
+      "type": "object"
+    },
+    "SceneObject": {
+      "additionalProperties": false,
+      "description": "An object in the scene and what is known about it.",
+      "properties": {
+        "color": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Color"
+        },
+        "initial_pose": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Sourced_Annotated_list_float___AfterValidator__"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "mass": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Sourced_Annotated_float__Gt__"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "material": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Sourced_str_"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "role": {
+          "enum": [
+            "dynamic",
+            "static"
+          ],
+          "title": "Role",
+          "type": "string"
+        },
+        "shape": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Shape"
+        },
+        "size": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Sourced_tuple_float__float__float__"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "name",
+        "role"
+      ],
+      "title": "SceneObject",
+      "type": "object"
+    },
+    "SourceInfo": {
+      "additionalProperties": false,
+      "description": "Which dataset the capture comes from.",
+      "properties": {
+        "dataset": {
+          "minLength": 1,
+          "title": "Dataset",
+          "type": "string"
+        },
+        "license": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "License"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Url"
+        },
+        "version": {
+          "minLength": 1,
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "dataset",
+        "version"
+      ],
+      "title": "SourceInfo",
+      "type": "object"
+    },
+    "Sourced_Annotated_float__Gt__": {
+      "additionalProperties": false,
+      "properties": {
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        },
+        "source": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source"
+        },
+        "value": {
+          "exclusiveMinimum": 0,
+          "title": "Value",
+          "type": "number"
+        }
+      },
+      "required": [
+        "value",
+        "provenance"
+      ],
+      "title": "Sourced[Annotated[float, Gt]]",
+      "type": "object"
+    },
+    "Sourced_Annotated_list_float___AfterValidator__": {
+      "additionalProperties": false,
+      "properties": {
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        },
+        "source": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source"
+        },
+        "value": {
+          "items": {
+            "type": "number"
+          },
+          "title": "Value",
+          "type": "array"
+        }
+      },
+      "required": [
+        "value",
+        "provenance"
+      ],
+      "title": "Sourced[Annotated[list[float], AfterValidator]]",
+      "type": "object"
+    },
+    "Sourced_Annotated_list_list_float____AfterValidator__": {
+      "additionalProperties": false,
+      "properties": {
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        },
+        "source": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source"
+        },
+        "value": {
+          "items": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array"
+          },
+          "title": "Value",
+          "type": "array"
+        }
+      },
+      "required": [
+        "value",
+        "provenance"
+      ],
+      "title": "Sourced[Annotated[list[list[float]], AfterValidator]]",
+      "type": "object"
+    },
+    "Sourced_bool_": {
+      "additionalProperties": false,
+      "properties": {
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        },
+        "source": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source"
+        },
+        "value": {
+          "title": "Value",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "value",
+        "provenance"
+      ],
+      "title": "Sourced[bool]",
+      "type": "object"
+    },
+    "Sourced_float_": {
+      "additionalProperties": false,
+      "properties": {
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        },
+        "source": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source"
+        },
+        "value": {
+          "title": "Value",
+          "type": "number"
+        }
+      },
+      "required": [
+        "value",
+        "provenance"
+      ],
+      "title": "Sourced[float]",
+      "type": "object"
+    },
+    "Sourced_str_": {
+      "additionalProperties": false,
+      "properties": {
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        },
+        "source": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source"
+        },
+        "value": {
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "value",
+        "provenance"
+      ],
+      "title": "Sourced[str]",
+      "type": "object"
+    },
+    "Sourced_tuple_float__float__float__": {
+      "additionalProperties": false,
+      "properties": {
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        },
+        "source": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source"
+        },
+        "value": {
+          "maxItems": 3,
+          "minItems": 3,
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Value",
+          "type": "array"
+        }
+      },
+      "required": [
+        "value",
+        "provenance"
+      ],
+      "title": "Sourced[tuple[float, float, float]]",
+      "type": "object"
+    },
+    "TextInfo": {
+      "additionalProperties": false,
+      "description": "Optional text accompanying the capture.",
+      "properties": {
+        "scene_description": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Scene Description"
+        },
+        "task": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Task"
+        }
+      },
+      "title": "TextInfo",
+      "type": "object"
+    },
+    "VideoStream": {
+      "additionalProperties": false,
+      "description": "An RGB video. ``num_frames`` and ``timestamps`` describe the visible frames.",
+      "properties": {
+        "fps": {
+          "exclusiveMinimum": 0,
+          "title": "Fps",
+          "type": "number"
+        },
+        "num_frames": {
+          "exclusiveMinimum": 0,
+          "title": "Num Frames",
+          "type": "integer"
+        },
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "resolution": {
+          "maxItems": 2,
+          "minItems": 2,
+          "prefixItems": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            }
+          ],
+          "title": "Resolution",
+          "type": "array"
+        },
+        "timestamps": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Timestamps"
+        }
+      },
+      "required": [
+        "path",
+        "fps",
+        "num_frames",
+        "resolution"
+      ],
+      "title": "VideoStream",
+      "type": "object"
+    },
+    "View": {
+      "additionalProperties": false,
+      "description": "One camera and the per-frame streams it recorded.",
+      "properties": {
+        "depth": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DepthStream"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "extrinsics": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Sourced_Annotated_list_list_float____AfterValidator__"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "extrinsics_per_frame": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/PerFrameExtrinsics"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "frame_range": {
+          "anyOf": [
+            {
+              "maxItems": 2,
+              "minItems": 2,
+              "prefixItems": [
+                {
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                {
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              ],
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Frame Range"
+        },
+        "intrinsics": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Sourced_Annotated_list_list_float____AfterValidator__"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "masks": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MaskStream"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "rgb": {
+          "$ref": "#/$defs/VideoStream"
+        }
+      },
+      "required": [
+        "rgb"
+      ],
+      "title": "View",
+      "type": "object"
+    },
+    "WorldFrame": {
+      "additionalProperties": false,
+      "description": "The world frame the capture's geometry is expressed in.",
+      "properties": {
+        "gravity": {
+          "$ref": "#/$defs/Sourced_tuple_float__float__float__",
+          "default": {
+            "provenance": "default",
+            "source": null,
+            "value": [
+              0.0,
+              0.0,
+              -9.81
+            ]
+          }
+        },
+        "length_unit": {
+          "const": "m",
+          "default": "m",
+          "title": "Length Unit",
+          "type": "string"
+        },
+        "metric_scale": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Sourced_bool_"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "up_axis": {
+          "const": "+z",
+          "default": "+z",
+          "title": "Up Axis",
+          "type": "string"
+        }
+      },
+      "title": "WorldFrame",
+      "type": "object"
+    }
+  },
+  "$id": "r2s-capture.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "A complete observation record of one physical event.",
+  "properties": {
+    "capture_id": {
+      "minLength": 1,
+      "title": "Capture Id",
+      "type": "string"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "robot": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/RobotStream"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "scene": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/SceneInfo"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "source": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/SourceInfo"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "spec": {
+      "default": "r2s-capture/1.0",
+      "title": "Spec",
+      "type": "string"
+    },
+    "text": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/TextInfo"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "views": {
+      "additionalProperties": {
+        "$ref": "#/$defs/View"
+      },
+      "minProperties": 1,
+      "title": "Views",
+      "type": "object"
+    },
+    "world": {
+      "$ref": "#/$defs/WorldFrame",
+      "default": {
+        "gravity": {
+          "provenance": "default",
+          "source": null,
+          "value": [
+            0.0,
+            0.0,
+            -9.81
+          ]
+        },
+        "length_unit": "m",
+        "metric_scale": null,
+        "up_axis": "+z"
+      }
+    }
+  },
+  "required": [
+    "capture_id",
+    "views"
+  ],
+  "title": "Capture",
+  "type": "object"
+}

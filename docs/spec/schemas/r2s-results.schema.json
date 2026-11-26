@@ -1,0 +1,345 @@
+{
+  "$defs": {
+    "BenchmarkScore": {
+      "additionalProperties": false,
+      "description": "One method on one benchmark: the headline metric over the benchmark's tasks.",
+      "properties": {
+        "benchmark": {
+          "title": "Benchmark",
+          "type": "string"
+        },
+        "delivered": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Delivered"
+        },
+        "higher_is_better": {
+          "default": true,
+          "title": "Higher Is Better",
+          "type": "boolean"
+        },
+        "infra_errors": {
+          "default": 0,
+          "title": "Infra Errors",
+          "type": "integer"
+        },
+        "metric": {
+          "title": "Metric",
+          "type": "string"
+        },
+        "range": {
+          "anyOf": [
+            {
+              "maxItems": 2,
+              "minItems": 2,
+              "prefixItems": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "number"
+                }
+              ],
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Range"
+        },
+        "references": {
+          "additionalProperties": {
+            "type": "number"
+          },
+          "title": "References",
+          "type": "object"
+        },
+        "reproducible_rate": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reproducible Rate"
+        },
+        "rerun_agreed": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rerun Agreed"
+        },
+        "rerun_compared": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rerun Compared"
+        },
+        "results": {
+          "title": "Results",
+          "type": "integer"
+        },
+        "scored": {
+          "title": "Scored",
+          "type": "integer"
+        },
+        "session_consistent_rate": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Session Consistent Rate"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unit"
+        },
+        "value": {
+          "$ref": "#/$defs/Estimate"
+        }
+      },
+      "required": [
+        "benchmark",
+        "metric",
+        "value",
+        "scored",
+        "results"
+      ],
+      "title": "BenchmarkScore",
+      "type": "object"
+    },
+    "Estimate": {
+      "additionalProperties": false,
+      "description": "A mean with a bootstrap confidence interval.",
+      "properties": {
+        "ci_high": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ci High"
+        },
+        "ci_low": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ci Low"
+        },
+        "mean": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Mean"
+        },
+        "n": {
+          "default": 0,
+          "title": "N",
+          "type": "integer"
+        }
+      },
+      "title": "Estimate",
+      "type": "object"
+    },
+    "MethodSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "benchmarks": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/BenchmarkScore"
+          },
+          "title": "Benchmarks",
+          "type": "array"
+        },
+        "delivered_rate": {
+          "title": "Delivered Rate",
+          "type": "number"
+        },
+        "infra_errors": {
+          "default": 0,
+          "title": "Infra Errors",
+          "type": "integer"
+        },
+        "method": {
+          "title": "Method",
+          "type": "string"
+        },
+        "method_kind": {
+          "title": "Method Kind",
+          "type": "string"
+        },
+        "network": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Network"
+        },
+        "privileged": {
+          "default": false,
+          "title": "Privileged",
+          "type": "boolean"
+        },
+        "reproduction_skill": {
+          "$ref": "#/$defs/Estimate"
+        },
+        "results": {
+          "title": "Results",
+          "type": "integer"
+        },
+        "tasks": {
+          "title": "Tasks",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "method",
+        "method_kind",
+        "tasks",
+        "results",
+        "reproduction_skill",
+        "delivered_rate"
+      ],
+      "title": "MethodSummary",
+      "type": "object"
+    }
+  },
+  "$id": "r2s-results.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "An experiment's aggregate over tasks, seeds and trials.",
+  "properties": {
+    "bootstrap_resamples": {
+      "title": "Bootstrap Resamples",
+      "type": "integer"
+    },
+    "confidence": {
+      "default": 0.95,
+      "title": "Confidence",
+      "type": "number"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "experiment": {
+      "title": "Experiment",
+      "type": "string"
+    },
+    "lab_version": {
+      "title": "Lab Version",
+      "type": "string"
+    },
+    "methods": {
+      "items": {
+        "$ref": "#/$defs/MethodSummary"
+      },
+      "title": "Methods",
+      "type": "array"
+    },
+    "protocol_version": {
+      "title": "Protocol Version",
+      "type": "string"
+    },
+    "rows": {
+      "default": [],
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Rows",
+      "type": "array"
+    },
+    "skipped": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Skipped",
+      "type": "array"
+    },
+    "spec": {
+      "default": "r2s-results/1.0",
+      "title": "Spec",
+      "type": "string"
+    },
+    "tasks": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Tasks",
+      "type": "array"
+    }
+  },
+  "required": [
+    "experiment",
+    "created_at",
+    "lab_version",
+    "protocol_version",
+    "bootstrap_resamples",
+    "methods",
+    "tasks"
+  ],
+  "title": "Results",
+  "type": "object"
+}

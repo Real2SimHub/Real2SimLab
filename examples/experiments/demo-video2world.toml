@@ -1,0 +1,26 @@
+# The demonstration run on Video2World (docs/results.md): Codex reconstructs one Push-T and one
+# DROID instance as video2sim packages, scored by Video2World's own evaluator. Downloads the two
+# samples (about 1 MB) on first use. Needs an NVIDIA GPU (SAPIEN's Vulkan) and two local images:
+#   r2s env build r2s-video2world r2s-agent-codex-video2world
+#   r2s run examples/experiments/demo-video2world.toml --out runs/demo-video2world
+# Video2World's own harness gives agents 180 minutes; this demo gives 60, so its scores are not
+# comparable with Video2World's published ones.
+spec = "r2s-experiment/1.0"
+name = "demo-video2world"
+description = "Codex on two Video2World instances (Push-T, DROID), 60 minutes each."
+
+[[tasks.benchmarks]]
+name = "video2world"
+select = ["twin_pusht_demo_0", "droid_iris_2023_03_02_16h_02m_41s_bowl_hand"]
+
+[[methods]]
+name = "codex"
+options = { reasoning_effort = "medium", time_budget_s = 3600, image = "r2s-agent-codex-video2world" }
+
+[run]
+backend = "docker"
+concurrency = 2
+agent_concurrency = 2
+
+[budget]
+max_agent_runs = 2

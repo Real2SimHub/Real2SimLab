@@ -1,0 +1,53 @@
+name: Release
+
+# Runs when a version tag is pushed (v1.0.0, ...), on the public repository only.
+# Real2SimLab is installed from the repository, so nothing goes to PyPI.
+# - Images: the redistributable runtime images go to the owner's GHCR namespace (GITHUB_TOKEN,
+#   no other account or secret), which is where the Lab pulls them from
+#   (real2simlab/_project.py, IMAGE_REGISTRY).
+# - The r2s-python image, saved and compressed, is attached to the GitHub release with its
+#   SHA-256, for `r2s env unpack r2s-python --from-url` on machines without Docker.
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+
+jobs:
+  images:
+    name: runtime images
+    if: ${{ !github.event.repository.private }}
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+      packages: write
+    env:
+      # Only images whose contents may be redistributed. r2s-agent-claude-code (proprietary
+      # Claude Code) is never published: users build it themselves.
+      IMAGES: r2s-python r2s-verifier r2s-agent-codex r2s-agent-gemini-cli r2s-agent-opencode r2s-blender-4.0
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+      - run: sudo apt-get update && sudo apt-get install -y ffmpeg
+      - run: pip install -e .
+      - name: build
+        run: r2s env build $IMAGES
+      - name: log in to GHCR
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+      - name: push
+        run: |
+          # registry names are lowercase
+          scripts/publish_images.sh --targets "ghcr.io/${GITHUB_REPOSITORY_OWNER,,}" $IMAGES
+      - name: r2s-python image for machines without Docker
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          docker save ghcr.io/real2simhub/r2s-python:1.0 | gzip -9 > r2s-python-1.0.tar.gz
+          sha256sum r2s-python-1.0.tar.gz > r2s-python-1.0.tar.gz.sha256
+          gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1 || gh release create "$GITHUB_REF_NAME" --title "Real2SimLab $version" --notes-file CHANGELOG.md --verify-tag
+          gh release upload "$GITHUB_REF_NAME" r2s-python-1.0.tar.gz r2s-python-1.0.tar.gz.sha256 --clobber
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

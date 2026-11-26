@@ -1,0 +1,105 @@
+{
+  "$defs": {
+    "JsonValue": {}
+  },
+  "$id": "r2s-training.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "What a checkpoint was learned from (``training.json``).",
+  "properties": {
+    "content_digest": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Content Digest"
+    },
+    "dataset": {
+      "title": "Dataset",
+      "type": "string"
+    },
+    "dataset_digest": {
+      "title": "Dataset Digest",
+      "type": "string"
+    },
+    "duration_s": {
+      "title": "Duration S",
+      "type": "number"
+    },
+    "lab_version": {
+      "title": "Lab Version",
+      "type": "string"
+    },
+    "method": {
+      "title": "Method",
+      "type": "string"
+    },
+    "method_version": {
+      "title": "Method Version",
+      "type": "string"
+    },
+    "options": {
+      "additionalProperties": {
+        "$ref": "#/$defs/JsonValue"
+      },
+      "title": "Options",
+      "type": "object"
+    },
+    "prints": {
+      "default": "training-prints.npz",
+      "title": "Prints",
+      "type": "string"
+    },
+    "runs": {
+      "minimum": 0,
+      "title": "Runs",
+      "type": "integer"
+    },
+    "seed": {
+      "default": 0,
+      "title": "Seed",
+      "type": "integer"
+    },
+    "spec": {
+      "default": "r2s-training/1.0",
+      "title": "Spec",
+      "type": "string"
+    },
+    "started_at": {
+      "format": "date-time",
+      "title": "Started At",
+      "type": "string"
+    },
+    "task_ids": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Task Ids",
+      "type": "array"
+    },
+    "tasks": {
+      "minimum": 0,
+      "title": "Tasks",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "method",
+    "method_version",
+    "dataset",
+    "dataset_digest",
+    "tasks",
+    "runs",
+    "started_at",
+    "duration_s",
+    "lab_version"
+  ],
+  "title": "TrainingRecord",
+  "type": "object"
+}

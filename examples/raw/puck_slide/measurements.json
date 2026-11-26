@@ -1,0 +1,32 @@
+{
+ "puck": {
+  "size_m": [
+   0.08,
+   0.08,
+   0.03
+  ],
+  "mass_kg": 0.17,
+  "color": "red"
+ },
+ "floor": "flat grey surface, z = 0",
+ "observed_launch": {
+  "velocity_m_s": [
+   1.2,
+   0.0,
+   0.0
+  ],
+  "start_position_m": [
+   -0.6,
+   0.0,
+   0.015
+  ],
+  "how": "launcher, measured by a light gate"
+ },
+ "frame_rate": 30.0,
+ "frames": 60,
+ "camera": "camera.json: OpenCV axes, camera-to-world extrinsics, calibrated",
+ "outcomes": {
+  "observed": "the recorded launch",
+  "observed_repeat1..3": "three more launches at the same setting"
+ }
+}

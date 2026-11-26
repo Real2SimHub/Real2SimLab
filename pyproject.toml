@@ -1,0 +1,226 @@
+[build-system]
+requires = ["hatchling>=1.24"]
+build-backend = "hatchling.build"
+
+[project]
+name = "real2simlab"
+version = "1.0.0"
+description = "A unified platform for real-to-simulation. Any method, any benchmark: true to each, together on one scorecard; training tasks with exact truth, datasets and rewards from the same code."
+readme = "README.md"
+license = "Apache-2.0"
+license-files = ["LICENSE", "NOTICE"]
+requires-python = ">=3.11"
+authors = [{ name = "Real2SimLab contributors" }]
+keywords = ["real2sim", "real-to-simulation", "digital twin", "benchmark", "evaluation", "coding agents", "physics"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering",
+    "Typing :: Typed",
+]
+dependencies = [
+    "numpy>=1.26",
+    "scipy>=1.11",
+    "pydantic>=2.6,<3",
+    "tomli-w>=1.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8",
+    "pytest-cov>=5",
+    "pytest-timeout>=2.3",
+    "ruff>=0.6",
+    "pyright>=1.1.380",
+    "build>=1.2",
+]
+fourdcodebench = [
+    "huggingface_hub>=0.24",
+    "h5py>=3.10",
+    "hdf5plugin>=4.4",
+]
+iris = [
+    "huggingface_hub>=0.24",
+]
+physcodegym = [
+    "huggingface_hub>=0.24",
+    "opencv-python-headless>=4.9",
+]
+physicsiq = [
+    "huggingface_hub>=0.24",
+    "opencv-python-headless>=4.9",
+    "pandas>=2.0",
+    "tqdm>=4.60",
+]
+video2world = [
+    "huggingface_hub>=0.24",
+]
+physimcode = [
+    "huggingface_hub>=0.24",
+]
+mini-swe = [
+    "mini-swe-agent>=2.0",
+]
+harbor = [
+    "harbor>=0.25; python_version >= '3.12'",
+]
+docs = [
+    "mkdocs>=1.6",
+    "mkdocs-material>=9.5",
+    "mkdocstrings[python]>=0.26",
+]
+
+[project.urls]
+Paper = "https://arxiv.org/abs/2611.34849"
+Documentation = "https://github.com/Real2SimHub/Real2SimLab/tree/main/docs"
+Source = "https://github.com/Real2SimHub/Real2SimLab"
+
+[project.scripts]
+r2s = "real2simlab.cli.main:main"
+
+[project.entry-points."real2simlab.formats"]
+tracks = "real2simlab.formats.tracks:TracksFormat"
+video = "real2simlab.formats.video:VideoFormat"
+video2sim_package = "real2simlab.formats.video2sim_package:Video2SimPackageFormat"
+4d_world = "real2simlab.formats.four_d_world:FourDWorldFormat"
+
+[project.entry-points."real2simlab.metrics"]
+traj3d_mean = "real2simlab.metrics.trajectory:Traj3dMean"
+traj3d_rmse = "real2simlab.metrics.trajectory:Traj3dRmse"
+traj3d_final = "real2simlab.metrics.trajectory:Traj3dFinal"
+traj2d_px_mean = "real2simlab.metrics.trajectory:Traj2dPxMean"
+traj2d_norm_mean = "real2simlab.metrics.trajectory:Traj2dNormMean"
+event_first_contact = "real2simlab.metrics.events:FirstContactTime"
+event_bounce_count = "real2simlab.metrics.events:BounceCount"
+event_bounce_times = "real2simlab.metrics.events:BounceTimes"
+centroid_set_chamfer = "real2simlab.metrics.sets:CentroidSetChamfer"
+centroid_set_chamfer_2d = "real2simlab.metrics.sets:CentroidSetChamfer2d"
+
+[project.entry-points."real2simlab.backends"]
+local = "real2simlab.sandbox.local:LocalBackend"
+docker = "real2simlab.sandbox.docker:DockerBackend"
+bwrap = "real2simlab.sandbox.bwrap:BwrapBackend"
+
+[project.entry-points."real2simlab.benchmarks"]
+synthetic = "real2simlab.benchmarks.synthetic:SyntheticBenchmark"
+fourdcodebench = "real2simlab.benchmarks.fourdcodebench:FourDCodeBenchBenchmark"
+iris = "real2simlab.benchmarks.iris:IrisBenchmark"
+physcodegym = "real2simlab.benchmarks.physcodegym:PhysCodeGymBenchmark"
+physicsiq = "real2simlab.benchmarks.physicsiq:PhysicsIQBenchmark"
+video2world = "real2simlab.benchmarks.video2world:Video2WorldBenchmark"
+physimcode = "real2simlab.benchmarks.physimcode:PhySimCodeBenchmark"
+
+[project.entry-points."real2simlab.scorers"]
+fourdcodebench = "real2simlab.benchmarks.fourdcodebench.scorer:FourDCodeBenchScorer"
+physcodegym_pixels = "real2simlab.benchmarks.physcodegym.scorer:PhysCodeGymPixels"
+physics_iq = "real2simlab.benchmarks.physicsiq.scorer:PhysicsIQScorer"
+video2world = "real2simlab.benchmarks.video2world.scorer:Video2WorldScorer"
+physimcode = "real2simlab.benchmarks.physimcode.scorer:PhySimCodeScorer"
+
+[project.entry-points."real2simlab.methods"]
+static = "real2simlab.methods.baselines:StaticBaseline"
+constant_velocity = "real2simlab.methods.baselines:ConstantVelocityBaseline"
+oracle = "real2simlab.methods.baselines:OracleBaseline"
+nearest_twin = "real2simlab.benchmarks.synthetic.learned:NearestTwin"
+program = "real2simlab.methods.program:ProgramMethod"
+fake_agent = "real2simlab.agents.fake:FakeAgent"
+codex = "real2simlab.agents.codex:CodexAgent"
+claude_code = "real2simlab.agents.claude_code:ClaudeCodeAgent"
+gemini_cli = "real2simlab.agents.gemini_cli:GeminiCliAgent"
+opencode = "real2simlab.agents.opencode:OpenCodeAgent"
+mini_swe = "real2simlab.agents.mini_swe:MiniSweAgent"
+harbor = "real2simlab.agents.harbor:HarborAgent"
+
+[project.entry-points."real2simlab.cli"]
+doctor = "real2simlab.cli.twins:register_doctor"
+task = "real2simlab.cli.tasks:register_task"
+bench = "real2simlab.cli.tasks:register_bench"
+run = "real2simlab.cli.experiments:register_run"
+eval = "real2simlab.cli.experiments:register_eval"
+twin = "real2simlab.cli.twins:register_twin"
+report = "real2simlab.cli.experiments:register_report"
+capture = "real2simlab.cli.tasks:register_capture"
+env = "real2simlab.cli.twins:register_env"
+spec = "real2simlab.cli.twins:register_spec"
+export = "real2simlab.cli.bridges:register_export"
+train = "real2simlab.cli.training:register_train"
+demo = "real2simlab.cli.demo:register_demo"
+
+[tool.hatch.build.targets.wheel]
+packages = ["real2simlab"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"docker" = "real2simlab/envs/docker"
+
+[tool.hatch.build.targets.sdist]
+# Anchored at the project root: an unanchored "scripts" would also match dev/scripts.
+include = [
+    "/real2simlab", "/docker", "/tests", "/examples", "/scripts", "/docs", "/mkdocs.yml",
+    "/README.md", "/LICENSE", "/NOTICE", "/CHANGELOG.md", "/CITATION.cff", "/README_zh.md",
+    "/AGENTS.md", "/.agents", "/CONTRIBUTING.md", "/.github/SECURITY.md",
+]
+exclude = ["/dev", "**/__pycache__", "**/*.pyc", "**/.pytest_cache"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers -m \"not live\""
+markers = [
+    "docker: needs a working Docker daemon and the r2s images",
+    "bwrap: needs bubblewrap with unprivileged user namespaces",
+    "live: calls a real agent or model API; never run by default",
+    "slow: takes more than a few seconds",
+]
+filterwarnings = ["ignore::real2simlab.sandbox.local.LocalIsolationWarning"]
+
+[tool.coverage.run]
+source = ["real2simlab"]
+branch = true
+# Measure the CLI and twin programs the tests start as subprocesses; run as
+# `coverage run -m pytest && coverage combine && coverage report`.
+parallel = true
+patch = ["subprocess"]
+
+[tool.coverage.report]
+skip_empty = true
+exclude_also = ["if TYPE_CHECKING:", "raise NotImplementedError", "@abstractmethod"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+extend-exclude = [".venv"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "SIM", "RUF"]
+ignore = ["RUF022"]
+
+[tool.ruff.lint.per-file-ignores]
+# Tests hold long literal data; NumPy array arithmetic trips RUF005.
+"tests/**" = ["B011", "E501", "RUF005"]
+# HTML templates of the static report.
+"real2simlab/report/**" = ["E501"]
+
+[tool.pyright]
+include = ["real2simlab"]
+exclude = ["**/__pycache__", ".venv"]
+typeCheckingMode = "standard"
+strict = [
+    "real2simlab/_base.py",
+    "real2simlab/errors.py",
+    "real2simlab/plugins.py",
+    "real2simlab/spec",
+    "real2simlab/capture",
+    "real2simlab/task",
+    "real2simlab/twin",
+    "real2simlab/formats",
+    "real2simlab/metrics",
+    "real2simlab/scoring",
+    "real2simlab/runner",
+    "real2simlab/sandbox",
+]
+reportMissingModuleSource = false

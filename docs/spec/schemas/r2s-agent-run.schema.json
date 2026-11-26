@@ -1,0 +1,289 @@
+{
+  "$defs": {
+    "Usage": {
+      "additionalProperties": false,
+      "properties": {
+        "cached_input_tokens": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cached Input Tokens"
+        },
+        "input_tokens": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Input Tokens"
+        },
+        "output_tokens": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Output Tokens"
+        },
+        "reasoning_tokens": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reasoning Tokens"
+        },
+        "total_tokens": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Total Tokens"
+        }
+      },
+      "title": "Usage",
+      "type": "object"
+    }
+  },
+  "$id": "r2s-agent-run.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "One agent run that built (or failed to build) a twin.",
+  "properties": {
+    "agent": {
+      "title": "Agent",
+      "type": "string"
+    },
+    "agent_version": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Agent Version"
+    },
+    "backend": {
+      "additionalProperties": true,
+      "title": "Backend",
+      "type": "object"
+    },
+    "cost_usd": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Cost Usd"
+    },
+    "delivered": {
+      "default": false,
+      "title": "Delivered",
+      "type": "boolean"
+    },
+    "duration_s": {
+      "title": "Duration S",
+      "type": "number"
+    },
+    "exit_code": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Exit Code"
+    },
+    "exit_status": {
+      "title": "Exit Status",
+      "type": "string"
+    },
+    "failure": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Failure"
+    },
+    "image": {
+      "additionalProperties": true,
+      "title": "Image",
+      "type": "object"
+    },
+    "instruction_sha256": {
+      "title": "Instruction Sha256",
+      "type": "string"
+    },
+    "instruction_template": {
+      "title": "Instruction Template",
+      "type": "string"
+    },
+    "last_message": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Last Message"
+    },
+    "method": {
+      "title": "Method",
+      "type": "string"
+    },
+    "model": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Model"
+    },
+    "network": {
+      "additionalProperties": true,
+      "title": "Network",
+      "type": "object"
+    },
+    "reasoning_effort": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Reasoning Effort"
+    },
+    "redactions": {
+      "default": 0,
+      "title": "Redactions",
+      "type": "integer"
+    },
+    "spec": {
+      "default": "r2s-agent-run/1.0",
+      "title": "Spec",
+      "type": "string"
+    },
+    "started_at": {
+      "format": "date-time",
+      "title": "Started At",
+      "type": "string"
+    },
+    "stderr": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Stderr"
+    },
+    "task_hash": {
+      "title": "Task Hash",
+      "type": "string"
+    },
+    "task_id": {
+      "title": "Task Id",
+      "type": "string"
+    },
+    "time_budget_s": {
+      "title": "Time Budget S",
+      "type": "number"
+    },
+    "trajectory": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Trajectory"
+    },
+    "trial": {
+      "title": "Trial",
+      "type": "integer"
+    },
+    "usage": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Usage"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    }
+  },
+  "required": [
+    "method",
+    "agent",
+    "instruction_template",
+    "instruction_sha256",
+    "task_id",
+    "task_hash",
+    "trial",
+    "image",
+    "backend",
+    "network",
+    "started_at",
+    "duration_s",
+    "time_budget_s",
+    "exit_status"
+  ],
+  "title": "AgentRecord",
+  "type": "object"
+}

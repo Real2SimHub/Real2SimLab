@@ -1,0 +1,167 @@
+{
+  "$id": "r2s-build.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "One build of one method on one task.",
+  "properties": {
+    "agent_record": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Agent Record"
+    },
+    "delivered": {
+      "title": "Delivered",
+      "type": "boolean"
+    },
+    "duration_s": {
+      "title": "Duration S",
+      "type": "number"
+    },
+    "failure": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Failure"
+    },
+    "infra_error": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Infra Error"
+    },
+    "lab_version": {
+      "title": "Lab Version",
+      "type": "string"
+    },
+    "method": {
+      "title": "Method",
+      "type": "string"
+    },
+    "method_digest": {
+      "title": "Method Digest",
+      "type": "string"
+    },
+    "method_kind": {
+      "title": "Method Kind",
+      "type": "string"
+    },
+    "network": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Network"
+    },
+    "options": {
+      "additionalProperties": true,
+      "title": "Options",
+      "type": "object"
+    },
+    "privileged": {
+      "default": false,
+      "title": "Privileged",
+      "type": "boolean"
+    },
+    "seed": {
+      "title": "Seed",
+      "type": "integer"
+    },
+    "session_output": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Session Output"
+    },
+    "session_output_fingerprint": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Session Output Fingerprint"
+    },
+    "spec": {
+      "default": "r2s-build/1.0",
+      "title": "Spec",
+      "type": "string"
+    },
+    "started_at": {
+      "format": "date-time",
+      "title": "Started At",
+      "type": "string"
+    },
+    "task_hash": {
+      "title": "Task Hash",
+      "type": "string"
+    },
+    "task_id": {
+      "title": "Task Id",
+      "type": "string"
+    },
+    "trial": {
+      "title": "Trial",
+      "type": "integer"
+    },
+    "twin_fingerprint": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Twin Fingerprint"
+    }
+  },
+  "required": [
+    "method",
+    "method_kind",
+    "method_digest",
+    "task_id",
+    "task_hash",
+    "trial",
+    "seed",
+    "delivered",
+    "started_at",
+    "duration_s",
+    "lab_version"
+  ],
+  "title": "BuildRecord",
+  "type": "object"
+}

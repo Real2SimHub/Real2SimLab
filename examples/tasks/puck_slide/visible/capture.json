@@ -1,0 +1,123 @@
+{
+  "spec": "r2s-capture/1.0",
+  "capture_id": "examples/puck_slide",
+  "world": {
+    "length_unit": "m",
+    "up_axis": "+z",
+    "gravity": {
+      "value": [
+        0.0,
+        0.0,
+        -9.81
+      ],
+      "provenance": "default"
+    },
+    "metric_scale": {
+      "value": true,
+      "provenance": "human_edited"
+    }
+  },
+  "views": {
+    "cam": {
+      "rgb": {
+        "path": "cam/rgb.mp4",
+        "fps": 30.0,
+        "num_frames": 60,
+        "resolution": [
+          480,
+          270
+        ]
+      },
+      "intrinsics": {
+        "value": [
+          [
+            461.03571047307986,
+            0.0,
+            240.0
+          ],
+          [
+            0.0,
+            461.03571047307986,
+            135.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "provenance": "measured"
+      },
+      "extrinsics": {
+        "value": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            -0.0,
+            -0.5407575913134988,
+            0.8411784753765535,
+            -1.4
+          ],
+          [
+            0.0,
+            -0.8411784753765535,
+            -0.5407575913134988,
+            0.9
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "provenance": "measured"
+      }
+    }
+  },
+  "scene": {
+    "objects": [
+      {
+        "name": "puck",
+        "role": "dynamic",
+        "shape": "cylinder",
+        "size": {
+          "value": [
+            0.08,
+            0.08,
+            0.03
+          ],
+          "provenance": "measured"
+        },
+        "color": "red",
+        "initial_pose": {
+          "value": [
+            -0.6,
+            0.0,
+            0.015,
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "provenance": "measured"
+        }
+      },
+      {
+        "name": "floor",
+        "role": "static",
+        "shape": "flat grey floor at z = 0"
+      }
+    ],
+    "environment": "Flat grey floor, world-frame z is up."
+  },
+  "text": {
+    "task": "Reproduce the puck's slide until it stops.",
+    "scene_description": "A red puck slides across a flat grey floor. The puck is launched from x = -0.6 m and its motion is recorded for 2 seconds."
+  },
+  "extensions": {}
+}

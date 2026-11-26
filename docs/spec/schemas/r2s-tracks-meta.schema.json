@@ -1,0 +1,53 @@
+{
+  "$id": "r2s-tracks-meta.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "fps": {
+      "exclusiveMinimum": 0,
+      "type": "number"
+    },
+    "frame": {
+      "additionalProperties": false,
+      "properties": {
+        "length_unit": {
+          "const": "m"
+        },
+        "up_axis": {
+          "const": "+z"
+        }
+      },
+      "type": "object"
+    },
+    "generator": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "num_frames": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "objects": {
+      "items": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "spec": {
+      "const": "r2s-tracks/1.0"
+    }
+  },
+  "required": [
+    "spec",
+    "fps",
+    "num_frames",
+    "objects"
+  ],
+  "title": "r2s-tracks meta.json",
+  "type": "object"
+}
